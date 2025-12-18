@@ -13,7 +13,7 @@ const PatientList = ({ onSelectPatient }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState(null);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
-  
+
 
   // TODO: Implement the fetchPatients function
   // This function should:
@@ -88,15 +88,17 @@ const PatientList = ({ onSelectPatient }) => {
     <div className="patient-list-container">
       <div className="patient-list-header">
         <h2>{copyText.patientListHeaderTitle}</h2>
-        {loading && <div className="loading-inline">{copyText.patientListHeaderLoading}</div>}
-        {/* TODO: Add search input field */}
+
 
         <input
           type="text"
           placeholder="Search patients..."
           className="search-input"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            setLoading(true);
+            setSearchTerm(e.target.value)
+          }}
         />
       </div>
       {error && <div className="error-inline">{copyText.patientListError} {error}</div>}
@@ -104,10 +106,12 @@ const PatientList = ({ onSelectPatient }) => {
       {/* TODO: Implement patient list display */}
       {/* Map through patients and display them */}
       {/* Each patient should be clickable and call onSelectPatient with patient.id */}
-      <div className="patient-list">
-        {/* Your implementation here */}
-        {renderPatients()}
-      </div>
+      {loading ? <div className="loading-inline">{copyText.patientListHeaderLoading}</div> : (
+        <div className="patient-list">
+          {/* Your implementation here */}
+          {renderPatients()}
+        </div>
+      )}
 
       {/* TODO: Implement pagination controls */}
       {/* Show pagination buttons if pagination data is available */}
